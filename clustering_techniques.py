@@ -1,4 +1,4 @@
-#Apply the clustering techniques [kmeans and Agglomerative] to identify the customer segments
+# Apply the clustering techniques [kmeans and Agglomerative] to identify the customer segments
 # and identify how many data points are differently classified in both the methods.
 
 
@@ -13,7 +13,7 @@ from sklearn.cluster import AgglomerativeClustering
 
 df = pd.read_csv("wholesale customers data.csv")
 # print(df.info())
-print("Given Dataset: \n")
+print("\nGiven Dataset: \n")
 print(df.head(5))
 print("\n\n--------------------------------------------------------------------------")
 
@@ -45,7 +45,7 @@ for i in range(2,10):
 
 
 # Creating a new "final" model based on the optimum k value (3/5 in this case)
-KMeans_model = KMeans(n_clusters=5, init='k-means++').fit(df_imp.values)
+KMeans_model = KMeans(n_clusters=5, init='k-means++', n_init=10, max_iter=1000, random_state=20).fit(df_imp.values)
 clusters = KMeans_model.predict(df_imp.values)
 df_imp['Cluster'] = clusters
 
@@ -58,9 +58,9 @@ pc_k_df = pd.DataFrame(pc_k,columns=["pc1","pc2"])
 
 
 # Adding K-means Cluster Info for Comparison of All Numerical Columns Later
-print("K-Means Clustering Dataset: \n")
+print("\nK-Means Clustering Dataset: \n")
 print(df_imp.head())
-print('\nCount in each K-Means Cluster: \n')
+print('\n\nCount in each K-Means Cluster: \n')
 print(df_imp['Cluster'].value_counts())
 print("\n\n--------------------------------------------------------------------------")
 
@@ -93,17 +93,16 @@ X_h = df_h.values
 finalmodel = AgglomerativeClustering(n_clusters=5).fit(X_h)
 clusters1 = finalmodel.fit_predict(X_h)
 df_h['Cluster'] = clusters1
-print("Agglomerative Clustering Dataset: \n")
+print("\nAgglomerative Clustering Dataset: \n")
 print(df_h.head())
 # Check if the process of applying clustering worked
-print("\n\n--------------------------------------------------------------------------")
 # print(clusters)
-print('\nCount in each Agglomerative Cluster: \n')
+print('\n\nCount in each Agglomerative Cluster: \n')
 print(df_h['Cluster'].value_counts())
 print("\n\n--------------------------------------------------------------------------")
 
 
-#first number is cluster number, and second number is column number
+# First number is cluster number, and second number is column number
 # plt.scatter(X[clusters1==0,0],X[clusters1==0,1],c="red", label="Cluster1")
 # plt.scatter(X[clusters1==1,0],X[clusters1==1,1],c="blue", label="Cluster2")
 # plt.scatter(X[clusters1==2,0],X[clusters1==2,1],c="green", label="Cluster3")
@@ -116,17 +115,17 @@ print("\n\n---------------------------------------------------------------------
 # Sorting Before Comparison
 df_imp = df_imp.sort_values('Fresh')
 df_h = df_h.sort_values('Fresh')
-print("K-Means Clustering Dataset after sorting: \n")
-print(df_imp.head(5))
-print("\n\n--------------------------------------------------------------------------")
-print("Agglomerative Clustering Dataset after sorting: \n")
-print(df_h.head(5))
+# print("\nK-Means Clustering Dataset after sorting: \n")
+# print(df_imp.head(5))
+# print("\n\n--------------------------------------------------------------------------")
+# print("\nAgglomerative Clustering Dataset after sorting: \n")
+# print(df_h.head(5))
 df_imp['Comparison'] = df_imp['Cluster'] == df_h[ 'Cluster']
-print("\n\n--------------------------------------------------------------------------")
+# print("\n\n--------------------------------------------------------------------------")
 
 
 # True/False Comparison Count
-print("\nCluster Matching Statistics: \n")
+print("\nK-Means & Agglomerative Clustering Similarity Count for this Dataset: \n")
 print(df_imp['Comparison'].value_counts())
 
 # print(df_imp1.head())
